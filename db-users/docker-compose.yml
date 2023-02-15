@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  db_users:
+    image: mongo
+    environment:
+      - "MONGO_INITDB_DATABASE=db_users"
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb:/data/db
+      
