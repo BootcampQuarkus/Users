@@ -52,7 +52,7 @@ public class UsersService {
    */
 
   public Uni<Cards> add(UserRequest users) {
-    Uni<NaturalPersonD> naturalPerson = naturalPersonApi.getById(Long.parseLong(users.getCustomerId()));
+    Uni<NaturalPersonD> naturalPerson = naturalPersonApi.getById(Long.parseLong(users.getCustomerId().toString()));
     return naturalPerson.flatMap(np -> {
       if (np == null || np.getId() == null) {
         throw new NotFoundException("customer not found");
@@ -62,7 +62,7 @@ public class UsersService {
         if (c == null || c.getId() == null) {
           throw new NotFoundException("card not found");
         }
-        Uni<Users> gottenUser = findByCustomerId(users.getCustomerId());
+        Uni<Users> gottenUser = findByCustomerId(users.getCustomerId().toString());
         return gottenUser.flatMap(user -> {
           if (user != null) {
             throw new NotFoundException();
@@ -74,14 +74,13 @@ public class UsersService {
   }
 
   public Uni<CardD> callCardsCustomer(UserRequest usersa) {
-    Uni<List<CardD>> usersCards = iCardApi.getAll(Long.parseLong(usersa.getCustomerId()), Long.parseLong("2"));
+    Uni<List<CardD>> usersCards = iCardApi.getAll(usersa.getCustomerId(), 2L);
     return usersCards.onItem().<CardD>disjoint()
           .filter(uc -> (uc.getSerial().equals(usersa.getCard().getSerial())
-                && uc.getMonth().intValue() == usersa.getCard().getMonth().intValue()
-                && uc.getYear().intValue() == usersa.getCard().getYear().intValue()
-                && uc.getCvv() == usersa.getCard().getCvv()))
+                && uc.getMonth().equals(usersa.getCard().getMonth())
+                && uc.getYear().equals(usersa.getCard().getYear())
+                && uc.getCvv().equals(usersa.getCard().getCvv())))
           .collect().first();
-
   }
 
   public Uni<Cards> saveUserAccount(UserRequest users) {

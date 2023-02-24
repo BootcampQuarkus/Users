@@ -11,6 +11,6 @@ public class Users {
 
   //@BsonId
   private ObjectId id;
-  private String customerId;
+  private Long customerId;
   private String password;
 }

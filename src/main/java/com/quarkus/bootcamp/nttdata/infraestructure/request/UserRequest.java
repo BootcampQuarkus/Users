@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserRequest {
-  private String customerId;
+  private Long customerId;
   private String password;
   private CardD card;
 }
