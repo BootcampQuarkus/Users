@@ -19,11 +19,11 @@ import java.util.List;
 public class UsersResource {
 
   @Inject
-  UsersService usersService;
+  UsersService service;
 
   @POST
   public Uni<Response> add(UserRequest users) {
-    return usersService.add(users)
+    return service.add(users)
           .onItem().transform(uri ->
                 Response.ok(new ResponseDto<>(200, "Se registro correctamente", uri)).status(200).build());
   }
@@ -31,7 +31,7 @@ public class UsersResource {
   @Path("/login")
   @POST
   public Uni<Response> login(UserRequest users) {
-    return usersService.login(users).onItem().transform(us -> {
+    return service.login(users).onItem().transform(us -> {
       if (us.getPassword().equals(users.getPassword())) {
         return Response.ok(new ResponseDto<>(200, "login successed")).status(200).build();
       }
@@ -41,12 +41,12 @@ public class UsersResource {
 
   @GET
   public Uni<List<Users>> getAll() {
-    return usersService.getAll();
+    return service.getAll();
   }
 
   @GET
   @Path("/{id}")
   public Uni<Users> getById(@PathParam("id") String id) {
-    return usersService.getById(id);
+    return service.getById(id);
   }
 }
