@@ -1,17 +1,17 @@
 package com.quarkus.bootcamp.nttdata.application;
 
 
+import com.quarkus.bootcamp.nttdata.domain.entity.Users;
 import com.quarkus.bootcamp.nttdata.domain.services.UsersService;
 import com.quarkus.bootcamp.nttdata.infraestructure.request.ResponseDto;
 import com.quarkus.bootcamp.nttdata.infraestructure.request.UserRequest;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,5 +37,16 @@ public class UsersResource {
       }
       return Response.ok(new ResponseDto<>(422, "login fault")).status(422).build();
     });
+  }
+
+  @GET
+  public Uni<List<Users>> getAll() {
+    return usersService.getAll();
+  }
+
+  @GET
+  @Path("/{id}")
+  public Uni<Users> getById(@PathParam("id") String id) {
+    return usersService.getById(id);
   }
 }

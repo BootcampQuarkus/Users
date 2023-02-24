@@ -13,6 +13,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import org.bson.types.ObjectId;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.util.List;
@@ -31,6 +32,14 @@ public class UsersService {
 
   @RestClient
   ICardApi iCardApi;
+
+  public Uni<List<Users>> getAll() {
+    return usersRepository.listAll();
+  }
+
+  public Uni<Users> getById(String id) {
+    return usersRepository.findById(new ObjectId(id));
+  }
 
   /**
    * @Inject ReactiveMongoClient mongoClient; public Uni<Void> add(Users users){
