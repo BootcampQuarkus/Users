@@ -32,4 +32,8 @@ public class CardService {
     return repository.findById(new ObjectId(id));
   }
 
+  public Uni<Cards> getBySerial(String serial) {
+    return repository.find("{'serial': ?1}", serial).firstResult();
+  }
+
 }

@@ -26,4 +26,10 @@ public class CardResource {
   public Uni<Cards> getById(@PathParam("id") String id) {
     return service.getById(id);
   }
+
+  @GET
+  @Path("/serial/{serial}")
+  public Uni<Cards> getBySerial(@PathParam("serial") String serial) {
+    return service.getBySerial(serial);
+  }
 }
